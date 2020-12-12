@@ -14,8 +14,5 @@ app.logger.handlers = gunicorn_logger.handlers
 app.logger.setLevel(gunicorn_logger.level)
 
 @app.route('/')
-def middleman():
+def index():
     return {"Success": "You can successfully communicate with the middleman backend."}, 200
-
-if __name__ == '__main__':
-    app.run("127.0.0.1", 4242)
