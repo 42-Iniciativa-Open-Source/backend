@@ -9,6 +9,12 @@ def test_connection(conn: StrictRedis) -> None:
     except ConnectionError as e:
         raise
 
+def set_token(conn: StrictRedis, token: str) -> None:
+    conn.set('token', token, 7200)
+
+def get_token(conn: StrictRedis) -> str:
+    return conn.get('token')
+
 if __name__ == '__main__':
     conn = get_connection()
     test_connection(conn)
