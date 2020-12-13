@@ -1,5 +1,7 @@
 import os
 
+AUTHORIZATION_CODE = os.environ.get("AUTHORIZATION_CODE")
+
 CLIENT_ID = os.environ.get("CLIENT_ID_42")
 CLIENT_SECRET = os.environ.get("CLIENT_SECRET_42")
 

@@ -1,8 +1,8 @@
-from flask import Flask
+from flask import Flask, request
 import logging
-import json
 
 from routes import forty_two
+from constants import AUTHORIZATION_CODE
 
 app = Flask(__name__)
 
@@ -15,4 +15,7 @@ app.logger.setLevel(gunicorn_logger.level)
 
 @app.route('/')
 def index():
-    return {"Success": "You can successfully communicate with the middleman backend."}, 200
+    header_authorization_code = request.headers.get("Authorization")
+    if AUTHORIZATION_CODE == header_authorization_code:
+        return {"Success": "You can successfully communicate with the middleman backend."}, 200
+    return {"Failed": "You need provide a valid authorization code."}, 401
