@@ -1,4 +1,6 @@
-CLIENT_ID = "ab68a0b91814d04e32f3099edfaf6babf7604e0f50835c152642da4c140dc0e9" # destroyed
-CLIENT_SECRET = "b069937899a67675167bc8c8a276379aa0cac19a27a80cc3745a253e9d00cd12" # destroyed
+import os
+
+CLIENT_ID = os.environ.get("CLIENT_ID_42")
+CLIENT_SECRET = os.environ.get("CLIENT_SECRET_42")
 
 INTRA_API_URL = "https://api.intra.42.fr"
