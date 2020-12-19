@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 import requests, json
 
 from constants import AUTHORIZATION_CODE, INTRA_API_URL
@@ -22,6 +22,6 @@ def forty_two(path: str):
             return {"Failed": "Timeout."}, 429
         except requests.TooManyRedirects as e:
             return {"Failed": "Exceed limit of redirects."}, 502
-        return r.json(), 200
+        return jsonify(r.json()), 200
     else:
         return {"Failed": "You need provide a valid authorization code."}, 401
