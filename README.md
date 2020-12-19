@@ -26,7 +26,9 @@ curl --request GET \
 
 That's it! This way you will get all information about user `csouza-f`.
 
-The idea behind this is you pass any endpoint available by 42 after `https://iniciativa-open-source.herokuapp.com/42`
+The idea behind this is you pass any endpoint available by 42 after `https://iniciativa-open-source.herokuapp.com/42`. It's important to note that this endpoint make all requests already with `/v2`.
+
+For example, this `https://iniciativa-open-source.herokuapp.com/42/users/csouza-f` basically is `https://api.intra.42.fr/v2/users/csouza-f`.
 
 [Here](https://api.intra.42.fr/apidoc) you can check all endpoints available.
 
