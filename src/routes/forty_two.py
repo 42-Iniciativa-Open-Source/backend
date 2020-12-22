@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 import requests
 
+import threading_requests.get
+
 import parser.headers, parser.url
 from constants import AUTHORIZATION_CODE, INTRA_API_URL
 import authorization
@@ -16,18 +18,20 @@ def forty_two(path: str):
         try:
             if page == "all":
                 data = []
+                urls = []
                 page = 1
-                while True:
-                    url = parser.url.set_query_string(url, {"page": page})
-                    r = requests.get(url, headers=authorization.get_token_headers())
-                    r.raise_for_status()
-                    data.extend(r.json())
-                    pages = parser.headers.get_pages(r.headers)
-                    if "next" in pages:
-                        page = pages["next"]
-                    else:
-                        break
-                return jsonify(data), 200
+                url = parser.url.rename_query_string(url, {"page": "page[number]"})
+                url = parser.url.set_query_string(url, {"page[number]": page, "page[size]": 100})
+                r = requests.get(url, headers=authorization.get_token_headers())
+                r.raise_for_status()
+                pages = parser.headers.get_pages(r.headers)
+                for page in range(1, int(pages["last"])):
+                    url = parser.url.set_query_string(url, {"page[number]": page})
+                    urls.append(url)
+                print(urls, len(urls))
+                print(threading_requests.get.get(urls))
+                return jsonify(urls), 200
+                #return jsonify(data), 200
             else:
                 r = requests.get(url, headers=authorization.get_token_headers(), timeout=10)
                 r.raise_for_status()
