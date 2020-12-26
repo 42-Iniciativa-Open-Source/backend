@@ -3,7 +3,7 @@ from requests.exceptions import HTTPError, Timeout, TooManyRedirects
 from datetime import datetime
 
 from constants import INTRA_API_URL, SECRETS, APPS
-from db import red
+from db.redis import red
 
 red_conn = red.get_connection()
 

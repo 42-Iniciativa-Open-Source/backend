@@ -9,6 +9,8 @@ redis = "*"
 requests = "*"
 gunicorn = "*"
 pytest = "*"
+pymongo = "*"
+dnspython = "*"
 
 [dev-packages]
 

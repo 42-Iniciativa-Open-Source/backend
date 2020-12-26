@@ -2,6 +2,14 @@ import os
 
 INTRA_API_URL = "https://api.intra.42.fr"
 
+MONGODB_CLUSTER = os.environ.get("MONGODB_CLUSTER")
+MONGODB_USERNAME = os.environ.get("MONGODB_USERNAME")
+MONGODB_PASSWORD = os.environ.get("MONGODB_PASSWORD")
+MONGODB_CONN_STR = f"mongodb+srv://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@{MONGODB_CLUSTER}.glyt0.mongodb.net"
+
+#defined by heroku Redis integration
+REDISCLOUD_URL = os.environ.get('REDISCLOUD_URL')
+
 def get_secrets() -> dict:
     SECRETS = {}
     for app in range(1, int(APPS) + 1):
