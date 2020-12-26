@@ -15,5 +15,5 @@ try:
     APPS = os.environ.get("APPS")
     SECRETS = get_secrets()
 except TypeError as e:
-    quit()
     print("You need set some environment variables to properly start the server.")
+    quit()

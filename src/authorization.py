@@ -1,4 +1,5 @@
 import requests, json
+from requests.exceptions import HTTPError, Timeout, TooManyRedirects
 from datetime import datetime
 
 from constants import INTRA_API_URL, SECRETS, APPS
