@@ -1,5 +1,7 @@
 from urllib.parse import urlparse, parse_qsl, ParseResult, urlencode
+import requests
 
+import authorization
 from utils import parser
 
 def rename_query_string(url: str, queries: dict) -> str:
@@ -23,7 +25,9 @@ def all_pages(url: str, pages: dict, fast: bool=False) -> list:
     if fast:
         url = parser.url.rename_query_string(url, {"page": "page[number]"})
         url = parser.url.set_query_string(url, {"page[number]": 1, "page[size]": 100})
-    for page in range(1, int(pages["last"])):
+        r = requests.get(url, headers=authorization.get_token_headers())
+        pages = parser.headers.get_pages(r.headers)
+    for page in range(1, int(pages["last"]) + 1):
         url = parser.url.set_query_string(url, {"page[number]": page})
         urls.append(url)
     return urls
