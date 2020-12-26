@@ -29,7 +29,9 @@ def forty_two(path: str):
         except ConnectionError as e:
             return {"Failed": "Couldn't established connection with 42 API."}, 500
         except requests.HTTPError as e:
-            return {"Failed": "Couldn't get data from 42 API."}, 400
+            if r.headers["Content-Type"] == "application/json":
+                return jsonify(r.json()), r.status_code
+            return {}, r.status_code
         except requests.Timeout as e:
             return {"Failed": "Timeout."}, 429
         except requests.TooManyRedirects as e:
