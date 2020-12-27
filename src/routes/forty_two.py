@@ -19,10 +19,9 @@ def forty_two(path: str):
             r = s.get(url, headers=authorization.get_token_headers())
             r.raise_for_status()
             if page and "all" in page:
-                data = []
                 pages = parser.headers.get_pages(r.headers)
                 urls = parser.url.all_pages(url, pages, fast=True)
-                data = fast_requests.get.make_requests(urls)
+                data = fast_requests.get.make_requests(urls, path)
                 return jsonify(data), 200
             else:
                 return jsonify(r.json()), 200
