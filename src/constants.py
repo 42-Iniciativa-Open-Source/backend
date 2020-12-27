@@ -10,6 +10,8 @@ MONGODB_CONN_STR = f"mongodb+srv://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@{MONGOD
 #defined by heroku Redis integration
 REDISCLOUD_URL = os.environ.get('REDISCLOUD_URL')
 
+ALLOWED_PAGINATED_ALL = ("apps")
+
 def get_secrets() -> dict:
     SECRETS = {}
     for app in range(1, int(APPS) + 1):

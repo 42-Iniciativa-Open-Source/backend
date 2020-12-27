@@ -2,7 +2,7 @@ from urllib.parse import urlsplit, parse_qs
 
 def get_pages(headers: dict) -> dict:
     pages = {}
-    if headers["Link"]:
+    try:
         links = headers["Link"].split(", ")
         for link in links:
             url = link.split(";")[0][1:-1]
@@ -12,4 +12,9 @@ def get_pages(headers: dict) -> dict:
                 pages["last"] = page
             elif "next" in link:
                 pages["next"] = page
+            elif "prev" in link:
+                pages["previous"] = page
+        pages["current"] = headers["X-Page"]
+    except KeyError as e:
+        pass
     return pages
