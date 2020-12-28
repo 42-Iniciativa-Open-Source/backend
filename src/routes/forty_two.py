@@ -17,8 +17,8 @@ def forty_two(path: str):
         page = request.args.get("page")
         try:
             r = s.get(url, headers=authorization.get_token_headers())
-            r.raise_for_status()
             g.request = r
+            r.raise_for_status()
             if page and path in ALLOWED_PAGINATED_ALL and "all" in page:
                 pages = parser.headers.get_pages(r.headers)
                 url = parser.url.Url(url)
@@ -45,16 +45,22 @@ def forty_two(path: str):
 def apply_caching(response):
     r = g.get("request")
     headers = g.get("headers")
-    pages = parser.headers.get_pages(r.headers)
-    for name, page in pages.items():
-        response.headers[f"X-Page-{name.title()}"] = page
-    response.headers["X-Application-Name"] = ', '.join(set(headers["X-Application-Name"])) or r.headers["X-Application-Name"]
-    response.headers["X-Application-Id"] = r.headers["X-Application-Id"]
-    response.headers["X-Application-Roles"] = r.headers["X-Application-Roles"]
-    response.headers["X-Per-Page"] = r.headers["X-Per-Page"]
-    response.headers["X-Total"] = r.headers["X-Total"]
-    response.headers["X-Hourly-RateLimit-Limit"] = int(APPS) * 1200
-    response.headers["X-Secondly-RateLimit-Limit"] = int(APPS) * 2
+    try:
+        if headers:
+            response.headers["X-Application-Name"] = ', '.join(set(headers["X-Application-Name"]))
+        else:
+            response.headers["X-Application-Name"] = r.headers["X-Application-Name"]
+            pages = parser.headers.get_pages(r.headers)
+            for name, page in pages.items():
+                response.headers[f"X-Page-{name.title()}"] = page
+        response.headers["X-Application-Id"] = r.headers["X-Application-Id"]
+        response.headers["X-Application-Roles"] = r.headers["X-Application-Roles"]
+        response.headers["X-Hourly-RateLimit-Limit"] = int(APPS) * 1200
+        response.headers["X-Secondly-RateLimit-Limit"] = int(APPS) * 2
+        response.headers["X-Per-Page"] = r.headers["X-Per-Page"]
+        response.headers["X-Total"] = r.headers["X-Total"]
+    except (AttributeError, KeyError) as e:
+        pass
     response.headers["X-Frame-Options"] = "SAMEORIGIN"
     response.headers["X-Content-Type-Options"] = "nosniff"
     return response
