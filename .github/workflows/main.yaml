@@ -1,0 +1,41 @@
+name: Python package
+
+on: [pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+      env:
+        APPS: ${{ secrets.APPS }} 
+        AUTHORIZATION_CODE: ${{ secrets.AUTHORIZATION_CODE }}
+        MONGODB_CLUSTER: ${{ secrets.MONGODB_CLUSTER }}
+        MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+        MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+        REDISCLOUD_URL: ${{ secrets.REDISCLOUD_URL }}
+        CLIENT_ID_42_1: ${{ secrets.CLIENT_ID_42_1 }}
+        CLIENT_SECRET_42_1: ${{ secrets.CLIENT_SECRET_42_1 }}
+        CLIENT_ID_42_2: ${{ secrets.CLIENT_ID_42_2 }}
+        CLIENT_SECRET_42_2: ${{ secrets.CLIENT_SECRET_42_2 }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pipenv
+        pipenv install
+    - name: Lint with flake8
+      run: |
+        pipenv install flake8
+        flake8 src/ --count --show-source --statistics
+    - name: Test with pytest
+      run: |
+        ( cd ./src/tests ; pytest )
