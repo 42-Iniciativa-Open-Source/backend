@@ -1,9 +1,8 @@
 import requests, json
-from requests.exceptions import HTTPError, Timeout, TooManyRedirects
 from datetime import datetime
 
 from constants import INTRA_API_URL, SECRETS, APPS
-from db.redis import red
+from db import red
 
 red_conn = red.get_connection()
 
@@ -28,7 +27,7 @@ def get_token() -> str:
     """Get current valid token"""
     next = red.get_next(red_conn)
     if not next or int(next) >= int(APPS) + 1:
-        red.set_next(red_conn, 2)
+        red.set_next(red_conn, 1)
         next = 1
     else:
         red.incr_next(red_conn)

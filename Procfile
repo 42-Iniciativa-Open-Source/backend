@@ -1,1 +1,1 @@
-web: gunicorn wsgi:app --chdir ./src --timeout 500 
+web: gunicorn wsgi:app --chdir ./src 
