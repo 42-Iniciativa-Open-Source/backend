@@ -26,11 +26,46 @@ curl --request GET \
 
 That's it! This way you will get all information about user `csouza-f`.
 
-The idea behind this is you pass any endpoint available by 42 after `https://iniciativa-open-source.herokuapp.com/42`. It's important to note that this endpoint make all requests already with `/v2`.
-
-For example, this `https://iniciativa-open-source.herokuapp.com/42/users/csouza-f` basically is `https://api.intra.42.fr/v2/users/csouza-f`.
+The idea behind this is you pass any endpoint available by 42 after `https://iniciativa-open-source.herokuapp.com/42`. It's important to note that this endpoint make all requests already with `/v2`. For example, this `https://iniciativa-open-source.herokuapp.com/42/users/csouza-f` basically is `https://api.intra.42.fr/v2/users/csouza-f`.
 
 [Here](https://api.intra.42.fr/apidoc) you can check all endpoints available.
+
+#### Pagination
+
+The amount of pages available for a endpoint is displayed on response headers. For example, `/apps` endpoint:
+
+```bash
+curl --request GET \
+  --url https://iniciativa-open-source.herokuapp.com/42/apps \
+  --header 'authorization: your_authorization'
+```
+
+When a request is performed, you can check out the response headers
+
+![Response headers /apps](https://github.com/42-Iniciativa-Open-Source/backend/blob/media/apps.png)
+
+As you can see the marked headers are the last, next and current page. So, you can paginated a endpoint using query string `page={page}` this way.
+Maybe you want more data per request, so you can use `page[size]=100`, which is the maximum allowed from 42's API, default is 30. You can check out more on [42 API Docs](https://api.intra.42.fr/apidoc/guides/getting_started):
+
+```bash
+curl --request GET \
+  --url https://iniciativa-open-source.herokuapp.com/42/apps?page[size]=100 \
+  --header 'authorization: your_authorization'
+```
+
+As more objects per request, pages on response headers decrease:
+
+![Response headers /apps?page(size)=100](https://github.com/42-Iniciativa-Open-Source/backend/blob/media/appssize100.png)
+
+Or you can get all pages at once with special query string `page=all`. **This is in alpha and just available for /apps endpoint**.
+
+```bash
+curl --request GET \
+  --url https://iniciativa-open-source.herokuapp.com/42/apps?page=all \
+  --header 'authorization: your_authorization'
+```
+
+How this return all pages already, no one page header is set, but you will get all pages from `/apps` endpoint at once!
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
