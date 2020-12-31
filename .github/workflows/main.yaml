@@ -1,6 +1,11 @@
-name: Middleman backend
+name: CI Pytest and Flake8
 
-on: [pull_request]
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**.py'
 
 jobs:
   build:
