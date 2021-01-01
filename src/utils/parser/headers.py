@@ -1,5 +1,6 @@
 from urllib.parse import urlsplit, parse_qs
 
+
 def get_pages(headers: dict) -> dict:
     pages = {}
     try:
@@ -15,6 +16,6 @@ def get_pages(headers: dict) -> dict:
             elif "prev" in link:
                 pages["previous"] = page
         pages["current"] = headers["X-Page"]
-    except KeyError as e:
+    except KeyError:
         pass
     return pages

@@ -5,6 +5,7 @@ from functools import reduce
 r = requests.get("https://api.intra.42.fr/apidoc")
 docs = json.loads(r.text)
 
+
 def fill_ids(endpoints: list) -> list:
     filled_endpoints = []
     for endpoint in endpoints:
@@ -14,6 +15,7 @@ def fill_ids(endpoints: list) -> list:
         continue
       filled_endpoints.append(endpoint)
     return filled_endpoints
+
 
 def get_allowed_endpoints() -> list:
     all_42_endpoints = docs["docs"]["resources"]
@@ -27,6 +29,7 @@ def get_allowed_endpoints() -> list:
                 endpoints_allowed.append(url["api_url"][4:])
     
     return fill_ids(endpoints_allowed)
+
 
 def get_paginated_endpoints() -> list:
     all_42_endpoints = docs["docs"]["resources"]

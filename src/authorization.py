@@ -1,11 +1,12 @@
-import requests, json
+import requests
+import json
 from requests.exceptions import HTTPError, Timeout, TooManyRedirects
-from datetime import datetime
 
 from constants import INTRA_API_URL, SECRETS, APPS
 from db.redis import red
 
 red_conn = red.get_connection()
+
 
 def create_token(token_id: int) -> str:
     """Generate token and store on database"""
@@ -16,13 +17,18 @@ def create_token(token_id: int) -> str:
     }
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     try:
-        r = requests.post(f"{INTRA_API_URL}/oauth/token", headers=headers, data=data)
+        r = requests.post(
+            f"{INTRA_API_URL}/oauth/token", headers=headers, data=data
+        )
     except (ConnectionError, HTTPError, Timeout, TooManyRedirects):
-        raise Exception("Connection to generate token with API failed for some reason.")
+        raise Exception(
+            "Connection to generate token with API failed for some reason."
+        )
     if r.status_code == requests.codes.ok:
         r = json.loads(r.text)
         red.set_token(red_conn, token_id, r["access_token"])
     return r["access_token"]
+
 
 def get_token() -> str:
     """Get current valid token"""
@@ -35,7 +41,8 @@ def get_token() -> str:
     token = red.get_token(red_conn, next)
     if not token:
         token = create_token(next)
-    return token 
+    return token
+
 
 def get_token_headers() -> dict:
     """Return header with token"""

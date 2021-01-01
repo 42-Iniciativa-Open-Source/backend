@@ -11,6 +11,7 @@ gunicorn = "*"
 pytest = "*"
 pymongo = "*"
 dnspython = "*"
+flake8 = "*"
 
 [dev-packages]
 
