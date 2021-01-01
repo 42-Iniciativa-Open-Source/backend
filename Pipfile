@@ -8,6 +8,10 @@ flask = "*"
 redis = "*"
 requests = "*"
 gunicorn = "*"
+pytest = "*"
+pymongo = "*"
+dnspython = "*"
+flake8 = "*"
 
 [dev-packages]
 
