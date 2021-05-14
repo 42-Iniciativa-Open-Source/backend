@@ -74,7 +74,7 @@ Please make sure to update tests as appropriate.
 
 ## License
 
-[GPL v3](https://choosealicense.com/licenses/gpl-3.0/)
+[![GPL-3.0](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/quick-guide-gplv3.html)
 
 ## Diagram
 
